@@ -1,4 +1,5 @@
 ﻿using Remotion.Linq.Parsing.Structure;
+using Rethinq;
 using Rethinq.Data.RqlClient;
 using Rethinq.Linq;
 using System;
@@ -16,6 +17,8 @@ namespace Sandbox {
 
             var connection = new Connection();
             connection.ConnectAsync(x => x.Courier).Wait();
+
+            Globals.Connetion = connection;
 
             var queryable = new RethinqTable<People>().AsQueryable();
             var count = queryable.Where(x => x.Id == 0).Count();

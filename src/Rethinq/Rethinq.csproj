@@ -71,6 +71,7 @@
     <Compile Include="Data\RqlClient\RqlTerm.cs" />
     <Compile Include="Data\RqlClient\Term.cs" />
     <Compile Include="Data\RqlClient\Terms.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Linq\Extensions.cs" />
     <Compile Include="Linq\RethinqQueryable.cs" />
     <Compile Include="Linq\RethinqQueryExecutor.cs" />

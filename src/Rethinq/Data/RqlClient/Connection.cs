@@ -15,7 +15,11 @@ namespace Rethinq.Data.RqlClient {
         private Subject<Segment> _segments = new Subject<Segment>();
         private CancellationTokenSource _connectCancellationTokenSource = new CancellationTokenSource();
         private static Func<byte[], int, int, string> GetString = (b, i, c) => Encoding.UTF8.GetString(b, i, c);
+        private Socket _socket;
+
+
         public Connection() {
+            _segments.Select(x => GetString(x.Buffer, x.Offset, x.Count)).Subscribe(Console.WriteLine);
         }
 
         public Connection(params EndPoint[] endPoints)
@@ -61,6 +65,7 @@ namespace Rethinq.Data.RqlClient {
                 throw new TaskCanceledException();
             }
 
+            var buffer = new byte[8096];
             var socket = (Socket)null;
             var completed = default(EventHandler<SocketAsyncEventArgs>);
             var receive = (SocketAsyncEventArgs)null;
@@ -86,7 +91,8 @@ namespace Rethinq.Data.RqlClient {
                     receive = new SocketAsyncEventArgs {
                         RemoteEndPoint = endPoint,
                     };
-                    receive.SetBuffer(new byte[1024], 0, 1024);
+
+                    receive.SetBuffer(buffer, 0, buffer.Length);
 
                     receive.Completed += completed = (s, e) => {
                         Completed(e);
@@ -95,7 +101,6 @@ namespace Rethinq.Data.RqlClient {
 
                     socket.Handshake(handshake: h => h(version: v3));
 
-                    var buffer = new byte[256];
                     var transfered = socket.Receive(buffer, SocketFlags.None);
 
                     ProcessReceive(buffer, 0, transfered, (segment) => {
@@ -105,9 +110,19 @@ namespace Rethinq.Data.RqlClient {
                         }
                         socket.ReceiveAsync(receive);
                     });
+
+                    _socket = socket;
                 }
             }
             catch { }
+        }
+
+        public async Task SendAsync(byte[] buffer, int offset, int length) {
+            _socket.SendAsync(_ => _
+                .Buffer(buffer)
+                .Offset(offset)
+                .Length(length)
+            );
         }
 
         protected virtual void Completed(SocketAsyncEventArgs e) {
@@ -143,7 +158,7 @@ namespace Rethinq.Data.RqlClient {
         }
 
         private void ProcessReceive(byte[] buffer, int offset, int transferred) {
-            
+            ProcessReceive(buffer, offset, transferred, _segments.OnNext);
         }
 
         private void ProcessReceive(byte[] buffer, int offset, int transferred, Action<Segment> callback) {
@@ -354,6 +369,51 @@ namespace Rethinq.Data.RqlClient {
 
         internal static byte[] V03(this Socket self) {
             return _v03;
+        }
+
+        internal static void SendAsync(this Socket socket, Action<ISocketAsyncEventArgsBuilder> builder) {
+            var b = new SocketAsyncEventArgsBuilder();
+            builder(b);
+            var saea = b.Build();
+            socket.SendAsync(saea);
+        }
+    }
+
+    internal interface ISocketAsyncEventArgsBuilder {
+        ISocketAsyncEventArgsBuilder Buffer(byte[] value);
+        ISocketAsyncEventArgsBuilder Offset(int value);
+        ISocketAsyncEventArgsBuilder Length(int value);
+    }
+
+    internal class SocketAsyncEventArgsBuilder : ISocketAsyncEventArgsBuilder {
+        private byte[] _buffer;
+        private int? _length;
+        private int? _offset;
+
+        public ISocketAsyncEventArgsBuilder Buffer(byte[] value) {
+            _buffer = value;
+            return this;
+        }
+
+        public ISocketAsyncEventArgsBuilder Length(int value) {
+            _length = value;
+            return this;
+        }
+
+        public ISocketAsyncEventArgsBuilder Offset(int value) {
+            _offset = value;
+            return this;
+        }
+
+        public SocketAsyncEventArgs Build() {
+            var saea = new SocketAsyncEventArgs();
+            var buffer = _buffer;
+            var length = (null == _length) ? _buffer.Length : _length.Value;
+            var offset = (null == _offset) ? 0 : _offset.Value;
+
+            saea.SetBuffer(buffer, offset, length);
+
+            return saea;
         }
     }
 }
