@@ -14,8 +14,8 @@ namespace Rethinq.Linq {
             .Arguments("test")
         );
 
-        public RqlTerm GetQuery() {
-            return _term;
+        public RqlQuery GetQuery() {
+            return new RqlQuery(_term, x => x.Start);
         }
 
         public override void VisitQueryModel(QueryModel queryModel) {
@@ -27,7 +27,7 @@ namespace Rethinq.Linq {
         }
 
         public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel) {
-            var table = GetTable(fromClause.ItemType);
+            var table = GetTable(fromClause.ItemType).ToLower();
             _term = new RqlTerm(_ => _
                 .Previous(_term)
                 .Term(x => x.Table)

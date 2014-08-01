@@ -64,9 +64,11 @@
     <Compile Include="Data\RqlClient\Builders\IRqlTermBuilder.cs" />
     <Compile Include="Data\RqlClient\Builders\IRqlTermBuilderExtensions.cs" />
     <Compile Include="Data\RqlClient\Builders\RqlTermBuilder.cs" />
+    <Compile Include="Data\RqlClient\Converters\RqlQueryConverter.cs" />
     <Compile Include="Data\RqlClient\Converters\RqlTermConverter.cs" />
     <Compile Include="Data\RqlClient\Converters\WhereClauseConverter.cs" />
     <Compile Include="Data\RqlClient\Connection.cs" />
+    <Compile Include="Data\RqlClient\RqlQuery.cs" />
     <Compile Include="Data\RqlClient\TermExtensions.cs" />
     <Compile Include="Data\RqlClient\RqlTerm.cs" />
     <Compile Include="Data\RqlClient\Term.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Linq\RethinqQueryModelVisitor.cs" />
     <Compile Include="Linq\RethinqTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
