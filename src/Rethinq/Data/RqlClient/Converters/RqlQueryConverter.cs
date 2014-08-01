@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Rethinq.Data.RqlClient.Converters {
     internal class RqlQueryConverter :JsonConverter {
         public override bool CanConvert(Type objectType) {
-            return typeof(RqlQuery).Equals(objectType);
+            return typeof(Query).Equals(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
@@ -21,12 +21,12 @@ namespace Rethinq.Data.RqlClient.Converters {
                 return;
             }
 
-            var query = value as RqlQuery;
+            var query = value as Query;
 
             writer.WriteStartArray();
-            writer.WriteValue(query.Query.Value);
+            writer.WriteValue(query.QueryType.Value);
 
-            if (query.Query.Equals(x => x.Start)) {
+            if (query.QueryType.Equals(x => x.Start)) {
 
                 serializer.Serialize(writer, query.Term);
 

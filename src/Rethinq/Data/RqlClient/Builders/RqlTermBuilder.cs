@@ -2,9 +2,9 @@
 
 namespace Rethinq.Data.RqlClient.Builders {
     internal class RqlTermBuilder : IRqlTermBuilder {
-        private RqlTerm _term;
+        private Term _term;
 
-        public RqlTermBuilder(RqlTerm term) {
+        public RqlTermBuilder(Term term) {
             _term = term;
         }
 
@@ -22,12 +22,12 @@ namespace Rethinq.Data.RqlClient.Builders {
             return this;
         }
 
-        IRqlTermBuilder IRqlTermBuilder.Term(Term value) {
-            _term.Term = value;
+        IRqlTermBuilder IRqlTermBuilder.Term(TermType value) {
+            _term.TermType = value;
             return this;
         }
 
-        IRqlTermBuilder IRqlTermBuilder.Previous(RqlTerm value) {
+        IRqlTermBuilder IRqlTermBuilder.Previous(Term value) {
             _term.Arguments.Add(value);
             return this;
         }

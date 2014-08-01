@@ -9,13 +9,13 @@ using System.Linq;
 
 namespace Rethinq.Linq {
     internal class RethinqQueryModelVisitor : QueryModelVisitorBase {
-        private RqlTerm _term = new RqlTerm(_ => _
+        private Term _term = new Term(_ => _
             .Term(x => x.Database)
             .Arguments("test")
         );
 
-        public RqlQuery GetQuery() {
-            return new RqlQuery(_term, x => x.Start);
+        public Query GetQuery() {
+            return new Query(_term, x => x.Start);
         }
 
         public override void VisitQueryModel(QueryModel queryModel) {
@@ -28,7 +28,7 @@ namespace Rethinq.Linq {
 
         public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel) {
             var table = GetTable(fromClause.ItemType).ToLower();
-            _term = new RqlTerm(_ => _
+            _term = new Term(_ => _
                 .Previous(_term)
                 .Term(x => x.Table)
                 .Arguments(table)
@@ -39,13 +39,13 @@ namespace Rethinq.Linq {
 
         public override void VisitResultOperator(ResultOperatorBase resultOperator, QueryModel queryModel, int index) {
             if(resultOperator is CountResultOperator) {
-                _term = new RqlTerm(_term, x => x.Count);
+                _term = new Term(_term, x => x.Count);
             }
             base.VisitResultOperator(resultOperator, queryModel, index);
         }
 
         public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index) {
-            _term = new RqlTerm(_ => _
+            _term = new Term(_ => _
                 .Previous(_term)
                 .Term(x => x.Filter)
                 .Arguments(whereClause)

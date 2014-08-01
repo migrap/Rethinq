@@ -34,9 +34,9 @@ namespace Rethinq.Data.RqlClient.Converters {
             get { return true; }
         }
 
-        private RqlTerm VisitExpression(Expression expression) {
-            var function = new RqlTerm(x => x.Function);
-            var parameters = new RqlTerm(x => x.MakeArray);
+        private Term VisitExpression(Expression expression) {
+            var function = new Term(x => x.Function);
+            var parameters = new Term(x => x.MakeArray);
 
             parameters.Arguments.Add(2);
             function.Arguments.Add(parameters);
@@ -48,11 +48,11 @@ namespace Rethinq.Data.RqlClient.Converters {
     }
 
     internal class WhereExpressionVisitor : ExpressionVisitor {
-        private RqlTerm _term;
+        private Term _term;
 
-        public static RqlTerm Walk(Expression expression) {
+        public static Term Walk(Expression expression) {
             if(expression.NodeType == ExpressionType.Constant) {
-                var term = new RqlTerm() {
+                var term = new Term() {
                     Arguments = { (expression as ConstantExpression).Value }
                 };
                 return term;
@@ -64,7 +64,7 @@ namespace Rethinq.Data.RqlClient.Converters {
         }        
 
         protected override Expression VisitConstant(ConstantExpression node) {
-            var term = new RqlTerm() {
+            var term = new Term() {
                 Arguments = { node.Value }
             };
 
@@ -82,16 +82,16 @@ namespace Rethinq.Data.RqlClient.Converters {
             return node;        
         }
 
-        private RqlTerm ConvertBinaryExpressionToRqlTerm(BinaryExpression expression, Func<RqlTerm, Func<Term>> term) {
-            _term = new RqlTerm(term);
+        private Term ConvertBinaryExpressionToRqlTerm(BinaryExpression expression, Func<Term, Func<TermType>> term) {
+            _term = new Term(term);
             _term.Arguments.Add(Walk(expression.Left));
             _term.Arguments.Add(Walk(expression.Right));            
             return _term;
         }
 
         protected override Expression VisitMember(MemberExpression node) {
-            _term = new RqlTerm(x => x.GetField);
-            _term.Arguments.Add(new RqlTerm(x => x.Var) {
+            _term = new Term(x => x.GetField);
+            _term.Arguments.Add(new Term(x => x.Var) {
                 Arguments = { 2 }
             });
 

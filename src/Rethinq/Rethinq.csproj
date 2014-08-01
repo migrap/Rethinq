@@ -68,10 +68,13 @@
     <Compile Include="Data\RqlClient\Converters\RqlTermConverter.cs" />
     <Compile Include="Data\RqlClient\Converters\WhereClauseConverter.cs" />
     <Compile Include="Data\RqlClient\Connection.cs" />
-    <Compile Include="Data\RqlClient\RqlQuery.cs" />
+    <Compile Include="Data\RqlClient\Query.cs" />
+    <Compile Include="Data\RqlClient\QueryExtensions.cs" />
+    <Compile Include="Data\RqlClient\Querys.cs" />
+    <Compile Include="Data\RqlClient\QueryType.cs" />
     <Compile Include="Data\RqlClient\TermExtensions.cs" />
-    <Compile Include="Data\RqlClient\RqlTerm.cs" />
     <Compile Include="Data\RqlClient\Term.cs" />
+    <Compile Include="Data\RqlClient\TermType.cs" />
     <Compile Include="Data\RqlClient\Terms.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Linq\Extensions.cs" />

@@ -43,4 +43,32 @@ namespace Sandbox {
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class Query {
+
+        public Query(Func<Query,Func<Query.Type>> type) {
+
+        }
+
+        public class Type {
+            public Type(string name, int value) { }
+        }
+    }
+
+    public class QueryType {
+    }
+
+    public static class Queries {
+        public static readonly Query.Type Start = new Query.Type("START", 1);
+    }
+
+    public static partial class Exteions {
+        public static Query.Type Start(this Query query) {
+            return Queries.Start;
+        }
+
+        private static void Sandbox() {
+            new Query(x => x.Start);
+        }
+    }
 }

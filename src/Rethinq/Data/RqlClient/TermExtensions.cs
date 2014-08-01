@@ -1,42 +1,42 @@
 ﻿namespace Rethinq.Data.RqlClient {
     internal static partial class TermExtensions {
-        internal static Term Dataum(this RqlTerm self) {
+        internal static TermType Dataum(this Term self) {
             return Terms.Datum;
         }
 
-        internal static Term Database(this RqlTerm self) {
+        internal static TermType Database(this Term self) {
             return Terms.Database;
         }
 
-        internal static Term Table(this RqlTerm self) {
+        internal static TermType Table(this Term self) {
             return Terms.Table;
         }
 
-        internal static Term Count(this RqlTerm self) {
+        internal static TermType Count(this Term self) {
             return Terms.Count;
         }
 
-        internal static Term Filter(this RqlTerm self) {
+        internal static TermType Filter(this Term self) {
             return Terms.Filter;
         }
 
-        internal static Term Function(this RqlTerm self) {
+        internal static TermType Function(this Term self) {
             return Terms.Function;
         }
 
-        internal static Term MakeArray(this RqlTerm self) {
+        internal static TermType MakeArray(this Term self) {
             return Terms.MakeArray;
         }
 
-        internal static Term Var(this RqlTerm self) {
+        internal static TermType Var(this Term self) {
             return Terms.Var;
         }
 
-        internal static Term Equals(this RqlTerm self) {
+        internal static TermType Equals(this Term self) {
             return Terms.Equals;
         }
 
-        internal static Term GetField(this RqlTerm self) {
+        internal static TermType GetField(this Term self) {
             return Terms.GetField;
         }
     }

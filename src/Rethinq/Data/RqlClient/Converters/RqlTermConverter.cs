@@ -5,7 +5,7 @@ using System.Linq;
 namespace Rethinq.Data.RqlClient.Converters {
     internal class RqlTermConverter : JsonConverter {
         public override bool CanConvert(Type objectType) {
-            return typeof(RqlTerm).Equals(objectType);
+            return typeof(Term).Equals(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
@@ -18,16 +18,16 @@ namespace Rethinq.Data.RqlClient.Converters {
                 return;
             }
 
-            var rql = value as RqlTerm;
+            var rql = value as Term;
 
-            if (null == rql.Term) {
+            if (null == rql.TermType) {
                 serializer.Serialize(writer, rql.Arguments.First());
                 return;
             }
             
             writer.WriteStartArray();
 
-            writer.WriteValue((int)rql.Term);
+            writer.WriteValue((int)rql.TermType);
 
             serializer.Serialize(writer, rql.Arguments);
 
