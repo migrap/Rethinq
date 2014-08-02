@@ -25,12 +25,12 @@ namespace Rethinq.Data.RqlClient {
             );
 
             //[43,[[15,[[14,[\"test\"]],\"people\"]]]]
-            var json = JsonConvert.SerializeObject(count, new RqlTermConverter());
+            var json = JsonConvert.SerializeObject(count, new TermConverter());
         }
     }
 
     internal class Term {
-        private TermType _term;
+        private TermType _termtype;
         private List<object> _arguments = new List<object>();
         private Dictionary<string, object> _optional = new Dictionary<string, object>();
 
@@ -41,20 +41,21 @@ namespace Rethinq.Data.RqlClient {
             builder(new RqlTermBuilder(this));
         }
 
-        internal Term(Func<Term, Func<TermType>> term)
-            : this(term: term(null)()) {
+        internal Term(Func<Term, Func<TermType>> termtype)
+            : this(termtype: termtype(null)()) {
         }
 
-        internal Term(Term previous = null, Func<Term, Func<TermType>> term = null, params object[] arguments) 
-            : this(previous: previous, term: term(previous)(), arguments: arguments) {
+        internal Term(Term previous = null, Func<Term, Func<TermType>> termtype = null, params object[] arguments) 
+            : this(previous: previous, termtype: termtype(previous)(), arguments: arguments) {
         }
 
-        internal Term(Term previous = null, Func<Term, Func<TermType>> term = null, IEnumerable arguments = null)
-            : this(previous: previous, term: term(previous)(), arguments: arguments) {
+        internal Term(Term previous = null, Func<Term, Func<TermType>> termtype = null, IEnumerable arguments = null)
+            : this(previous: previous, termtype: termtype(previous)(), arguments: arguments) {
         }
 
-        internal Term(Term previous = null, TermType term = null, IEnumerable arguments = null, IDictionary<string, object> optional = null) {
-            _term = term;
+        internal Term(Term previous = null, TermType termtype = null, IEnumerable arguments = null, IDictionary<string, object> optional = null) {
+            _termtype = termtype;
+
             if (null != previous && null != previous.TermType) {
                 _arguments.Add(previous);
             }
@@ -73,8 +74,8 @@ namespace Rethinq.Data.RqlClient {
         }
 
         public TermType TermType {
-            get { return _term; }
-            set { _term = value; }
+            get { return _termtype; }
+            set { _termtype = value; }
         }
 
         public List<object> Arguments {

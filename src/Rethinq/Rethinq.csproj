@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Automatonymous">
+      <HintPath>..\packages\Automatonymous.1.2.5\lib\net40\Automatonymous.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -59,23 +62,29 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Taskell">
+      <HintPath>..\packages\Taskell.0.1.2\lib\net40\Taskell.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\RqlClient\Builders\IRqlTermBuilder.cs" />
     <Compile Include="Data\RqlClient\Builders\IRqlTermBuilderExtensions.cs" />
     <Compile Include="Data\RqlClient\Builders\RqlTermBuilder.cs" />
-    <Compile Include="Data\RqlClient\Converters\RqlQueryConverter.cs" />
-    <Compile Include="Data\RqlClient\Converters\RqlTermConverter.cs" />
+    <Compile Include="Data\RqlClient\Converters\QueryConverter.cs" />
+    <Compile Include="Data\RqlClient\Converters\TermConverter.cs" />
     <Compile Include="Data\RqlClient\Converters\WhereClauseConverter.cs" />
     <Compile Include="Data\RqlClient\Connection.cs" />
     <Compile Include="Data\RqlClient\Query.cs" />
     <Compile Include="Data\RqlClient\QueryExtensions.cs" />
-    <Compile Include="Data\RqlClient\Querys.cs" />
+    <Compile Include="Data\RqlClient\QueryTypes.cs" />
     <Compile Include="Data\RqlClient\QueryType.cs" />
+    <Compile Include="Data\RqlClient\Response.cs" />
+    <Compile Include="Data\RqlClient\ResponseType.cs" />
+    <Compile Include="Data\RqlClient\ResponseTypes.cs" />
     <Compile Include="Data\RqlClient\TermExtensions.cs" />
     <Compile Include="Data\RqlClient\Term.cs" />
     <Compile Include="Data\RqlClient\TermType.cs" />
-    <Compile Include="Data\RqlClient\Terms.cs" />
+    <Compile Include="Data\RqlClient\TermTypes.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Linq\Extensions.cs" />
     <Compile Include="Linq\RethinqQueryable.cs" />
@@ -84,6 +93,8 @@
     <Compile Include="Linq\RethinqQueryModelVisitor.cs" />
     <Compile Include="Linq\RethinqTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RethinqClient.cs" />
+    <Compile Include="StateMachine.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>

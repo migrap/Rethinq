@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 
 namespace Rethinq.Data.RqlClient.Converters {
-    internal class RqlTermConverter : JsonConverter {
+    internal class TermConverter : JsonConverter {
         public override bool CanConvert(Type objectType) {
             return typeof(Term).Equals(objectType);
         }

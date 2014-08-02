@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Rethinq.Data.RqlClient.Versions;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Automatonymous;
 
 namespace Rethinq.Data.RqlClient {
     public class Connection {
@@ -16,10 +17,36 @@ namespace Rethinq.Data.RqlClient {
         private CancellationTokenSource _connectCancellationTokenSource = new CancellationTokenSource();
         private static Func<byte[], int, int, string> GetString = (b, i, c) => Encoding.UTF8.GetString(b, i, c);
         private Socket _socket;
-
+        private StateMachine _machine = new StateMachine();
+        private Context _context = new Context();
 
         public Connection() {
-            _segments.Select(x => GetString(x.Buffer, x.Offset, x.Count)).Subscribe(Console.WriteLine);
+            _machine.TransitionToState(_context, x => x.Initial);
+
+            _machine.StateChanged.Subscribe(x => {
+                var buffer = new byte[_context.Length];
+                Buffer.BlockCopy(_context.Buffer, _context.Offset, buffer, 0, buffer.Length);
+                buffer = buffer.ToLittleEndian();
+
+                if(x.Current == _machine.Initial) {
+                    _context.Length = 0;
+                    _context.Offset = 0;
+                    _context.Token = 0;
+                }
+                else if (x.Current == _machine.Token) {
+                    _context.Token = BitConverter.ToUInt64(buffer, 0);
+                }
+                else if (x.Current == _machine.Length) {
+                    _context.Length = BitConverter.ToInt32(buffer, 0);
+                }
+                else if (x.Current == _machine.Response) {
+                    var json = GetString(buffer, 0, buffer.Length);
+                }
+            });
+
+            _machine.StateChanged.Where(x => x.Current.Name == "Response").Subscribe(x => {
+                _machine.TransitionToState(_context, sm => sm.Initial);
+            });
         }
 
         public Connection(params EndPoint[] endPoints)
@@ -158,7 +185,30 @@ namespace Rethinq.Data.RqlClient {
         }
 
         private void ProcessReceive(byte[] buffer, int offset, int transferred) {
-            ProcessReceive(buffer, offset, transferred, _segments.OnNext);
+            const int Token = 8;
+            const int Length = 4;           
+            _context.Buffer = buffer;
+            _context.Offset = offset;
+
+
+            while (transferred > 0) {
+                if (_context.State == _machine.Initial && transferred >= Token) {
+                    _context.Length = Token;
+                    _machine.RaiseEvent(_context, x => x.Receive);
+                    transferred -= Token;
+                    _context.Offset += Token;
+                }
+                if (_context.State == _machine.Token && transferred >= Length) {
+                    _context.Length = Length;
+                    _machine.RaiseEvent(_context, x => x.Receive);
+                    transferred -= Length;
+                    _context.Offset += Length;
+                }
+                if(_context.State == _machine.Length && transferred >= _context.Length) {
+                    _machine.RaiseEvent(_context, x => x.Receive);
+                    transferred -= _context.Length;
+                }
+            }
         }
 
         private void ProcessReceive(byte[] buffer, int offset, int transferred, Action<Segment> callback) {

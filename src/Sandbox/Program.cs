@@ -9,6 +9,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Automatonymous;
+using System.Reactive.Linq;
 
 namespace Sandbox {
     class Program {
@@ -29,6 +31,8 @@ namespace Sandbox {
     }
 
     public static partial class Extensions {
+        
+
         public static EndPoint Courier(this Connection connection) {
             return new IPEndPoint(IPAddress.Parse("10.0.1.75"), 28015);
         }
@@ -42,33 +46,5 @@ namespace Sandbox {
     class People {
         public int Id { get; set; }
         public string Name { get; set; }
-    }
-
-    public class Query {
-
-        public Query(Func<Query,Func<Query.Type>> type) {
-
-        }
-
-        public class Type {
-            public Type(string name, int value) { }
-        }
-    }
-
-    public class QueryType {
-    }
-
-    public static class Queries {
-        public static readonly Query.Type Start = new Query.Type("START", 1);
-    }
-
-    public static partial class Exteions {
-        public static Query.Type Start(this Query query) {
-            return Queries.Start;
-        }
-
-        private static void Sandbox() {
-            new Query(x => x.Start);
-        }
     }
 }

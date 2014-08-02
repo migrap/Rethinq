@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace Rethinq.Data.RqlClient {
     public static partial class Extensions {
         internal static QueryType Start(this Query self) {
-            return Querys.Start;
+            return QueryTypes.Start;
         }
 
         internal static QueryType Continue(this Query self) {
-            return Querys.Continue;
+            return QueryTypes.Continue;
         }
 
         internal static QueryType Stop(this Query self) {
-            return Querys.Stop;
+            return QueryTypes.Stop;
         }
 
         internal static QueryType NoReplyWait(this Query self) {
-            return Querys.NoReplyWait;
+            return QueryTypes.NoReplyWait;
         }
     }
 }

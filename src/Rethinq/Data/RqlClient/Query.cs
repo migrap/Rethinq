@@ -27,10 +27,10 @@ namespace Rethinq.Data.RqlClient {
             set { _optional = value; }
         }
 
-        public Query(Term term, Func<Query,Func<QueryType>> query) {
+        public Query(Term term, Func<Query,Func<QueryType>> querytype) {
             Token = GetToken().Oxidize();
             Term = term;
-            QueryType = query(this)();
+            QueryType = querytype(this)();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Rethinq.Data.RqlClient.Converters {
-    internal class RqlQueryConverter :JsonConverter {
+    internal class QueryConverter :JsonConverter {
         public override bool CanConvert(Type objectType) {
             return typeof(Query).Equals(objectType);
         }
