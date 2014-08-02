@@ -12,11 +12,7 @@ namespace Rethinq.Linq {
         private Term _term = new Term(_ => _
             .Term(x => x.Database)
             .Arguments("test")
-        );
-
-        public Query GetQuery() {
-            return new Query(_term, x => x.Start);
-        }
+        );        
 
         public override void VisitQueryModel(QueryModel queryModel) {
             //queryModel.SelectClause.Accept(this, queryModel);

@@ -6,30 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Rethinq.Data.RqlClient {
-    public static partial class Extensions {
-        public static void Sandbox() {
-            var database = new Term(_ => _
-                .Term(x => x.Database)
-                .Arguments("test")
-            );
-
-            var table = new Term(_ => _
-                .Previous(database)
-                .Term(x => x.Table)
-                .Arguments("people")
-            );
-
-            var count = new Term(_ => _
-                .Previous(table)
-                .Term(x => x.Count)
-            );
-
-            //[43,[[15,[[14,[\"test\"]],\"people\"]]]]
-            var json = JsonConvert.SerializeObject(count, new TermConverter());
-        }
-    }
-
-    internal class Term {
+    public class Term {
         private TermType _termtype;
         private List<object> _arguments = new List<object>();
         private Dictionary<string, object> _optional = new Dictionary<string, object>();

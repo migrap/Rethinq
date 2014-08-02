@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Rethinq.Data.RqlClient {
     [DebuggerDisplay("{Name} - {Value}")]
-    internal class QueryType : IEquatable<QueryType> {
+    public class QueryType : IEquatable<QueryType> {
         private int _value;
         private string _name;
 

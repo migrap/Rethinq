@@ -1,5 +1,5 @@
 ﻿namespace Rethinq.Data.RqlClient {
-    internal static partial class TermExtensions {
+    public static partial class TermExtensions {
         internal static TermType Dataum(this Term self) {
             return TermTypes.Datum;
         }

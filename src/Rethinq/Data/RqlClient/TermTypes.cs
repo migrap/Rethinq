@@ -1,5 +1,5 @@
 ﻿namespace Rethinq.Data.RqlClient {
-    internal static partial class TermTypes {
+    public static partial class TermTypes {
         public static readonly TermType Datum = new TermType("DATUM", 1);
         public static readonly TermType MakeArray = new TermType("MAKE_ARRAY", 2);
         public static readonly TermType Database = new TermType("DB", 14);

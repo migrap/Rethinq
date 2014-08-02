@@ -2,7 +2,7 @@
 
 namespace Rethinq.Data.RqlClient {
     [DebuggerDisplay("{Name} - {Value}")]
-    internal class TermType {
+    public class TermType {
         private int _value;
         private string _name;
 

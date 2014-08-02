@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rethinq.Data.RqlClient {
-    internal class Query {
-        [ThreadStatic]
-        private static Token _token;
+    public class Query {
+        
         private Dictionary<string, object> _optional = new Dictionary<string, object>();
 
-        internal static Token GetToken() {
-            return _token ?? (_token = new Token((ushort)Thread.CurrentThread.ManagedThreadId));
+        public Query(ulong token, Term term, Func<Query, Func<QueryType>> querytype) {
+            Token = token;
+            Term = term;
+            QueryType = querytype(this)();
         }
 
         public ulong Token { get; private set; }
@@ -25,12 +26,6 @@ namespace Rethinq.Data.RqlClient {
         public Dictionary<string, object> Optional {
             get { return _optional; }
             set { _optional = value; }
-        }
-
-        public Query(Term term, Func<Query,Func<QueryType>> querytype) {
-            Token = GetToken().Oxidize();
-            Term = term;
-            QueryType = querytype(this)();
         }
     }
 }
