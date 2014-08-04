@@ -18,6 +18,7 @@ namespace Sandbox {
             //Rethinq.Linq.Extensions.Sandbox();     
 
             var connection = new Connection();
+            connection.ConnectAsync(x => x.Pugna).Wait();
             connection.ConnectAsync(x => x.Courier).Wait();
 
             Globals.Connetion = connection;
@@ -34,7 +35,11 @@ namespace Sandbox {
         
 
         public static EndPoint Courier(this Connection connection) {
-            return new IPEndPoint(IPAddress.Parse("10.0.1.75"), 28015);
+            return new DnsEndPoint("10.0.1.75", 28015);
+        }
+
+        public static EndPoint Pugna(this Connection connection) {
+            return new DnsEndPoint("10.0.1.80", 28015);
         }
     }
 

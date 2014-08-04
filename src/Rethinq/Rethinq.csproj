@@ -85,6 +85,11 @@
     <Compile Include="Data\RqlClient\Term.cs" />
     <Compile Include="Data\RqlClient\TermType.cs" />
     <Compile Include="Data\RqlClient\TermTypes.cs" />
+    <Compile Include="Dawn\SocketAwaitable\BlockingBufferManager.cs" />
+    <Compile Include="Dawn\SocketAwaitable\SocketAwaitable.cs" />
+    <Compile Include="Dawn\SocketAwaitable\SocketAwaitablePool.cs" />
+    <Compile Include="Dawn\SocketAwaitable\SocketAwaiter.cs" />
+    <Compile Include="Dawn\SocketAwaitable\SocketEx.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Linq\Extensions.cs" />
     <Compile Include="Linq\RethinqQueryable.cs" />
