@@ -26,33 +26,37 @@ namespace Sandbox {
 
             var token = new CancellationTokenSource().Token;
             var endPoint = new DnsEndPoint("rethink.migrap.dev", 8080);
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            var result = ConnectAsync(socket, endPoint).Result;
+            //var result = ConnectAsync(socket, endPoint).Result;
 
-            //var socket = new SocketClient(_ => _
-            //    .AddressFamily(AddressFamily.InterNetwork)
-            //    .SocketType(SocketType.Stream)
-            //    .ProtocolType(ProtocolType.Tcp)
-            //    .EndPoint(endPoint)
-            //);
-            //socket.Connecting += (s, e) => {
-            //    Console.WriteLine("Connecting: " + e.RemoteEndPoint);
-            //};
-            //socket.Connected += (s, e) => {                
-            //    Console.WriteLine("Connected: " + e.RemoteEndPoint);
-            //    (s as SocketClient).Receive();
-            //};
-            //socket.Disconnected += (s, e) => {
-            //    Console.WriteLine("Disconnected: " + e.RemoteEndPoint);
-            //    (s as SocketClient).Connect();
-            //};
-            //socket.ConnectAsync().Wait();
+            var socket = new SocketClient(_ => _
+                .AddressFamily(AddressFamily.InterNetwork)
+                .SocketType(SocketType.Stream)
+                .ProtocolType(ProtocolType.Tcp)
+                .EndPoint(endPoint)
+                .KeepAlive(TimeSpan.FromSeconds(5))
+            );
+            socket.Connecting += (s, e) => {
+                Console.WriteLine(DateTimeOffset.UtcNow + " Connecting: " + e.RemoteEndPoint);
+            };
+            socket.Connected += (s, e) => {
+                Console.WriteLine(DateTimeOffset.UtcNow + " Connected: " + e.RemoteEndPoint);
+                (s as SocketClient).Receive();
+            };
+            socket.Disconnected += (s, e) => {
+                Console.WriteLine(DateTimeOffset.UtcNow + " Disconnected: " + e.RemoteEndPoint);
+                (s as SocketClient).Connect();
+            };
+            //socket.Connect();
+            socket.ConnectAsync().Wait();
 
-            //while (true) {
-            //    Console.ReadLine();
-            //    socket.IsConnected();
-            //}
+            var buffer = Encoding.UTF8.GetBytes("jello");
+            socket.SendAsync(buffer, 0, buffer.Length).Wait();
+
+            while (true) {
+                Console.ReadLine();
+                socket.IsConnected();
+            }
 
 
 
