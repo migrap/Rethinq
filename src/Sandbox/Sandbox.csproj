@@ -79,6 +79,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GitHub\Dawn.SocketAwaitable\src\Dawn.SocketAwaitable\Dawn.SocketAwaitable.csproj">
+      <Project>{09c67697-1b3e-4e40-a972-c6768ffa006c}</Project>
+      <Name>Dawn.SocketAwaitable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Visual Studio 2013\Projects\Migrap\src\Migrap\Migrap.csproj">
+      <Project>{a7537121-9881-448e-ae41-20a9563f6d9e}</Project>
+      <Name>Migrap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rethinq\Rethinq.csproj">
       <Project>{b78eafe5-de5b-440e-8d15-86d9d8a96042}</Project>
       <Name>Rethinq</Name>

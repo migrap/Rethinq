@@ -85,11 +85,6 @@
     <Compile Include="Data\RqlClient\Term.cs" />
     <Compile Include="Data\RqlClient\TermType.cs" />
     <Compile Include="Data\RqlClient\TermTypes.cs" />
-    <Compile Include="Dawn\SocketAwaitable\BlockingBufferManager.cs" />
-    <Compile Include="Dawn\SocketAwaitable\SocketAwaitable.cs" />
-    <Compile Include="Dawn\SocketAwaitable\SocketAwaitablePool.cs" />
-    <Compile Include="Dawn\SocketAwaitable\SocketAwaiter.cs" />
-    <Compile Include="Dawn\SocketAwaitable\SocketEx.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Linq\Extensions.cs" />
     <Compile Include="Linq\RethinqQueryable.cs" />
@@ -106,7 +101,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GitHub\Dawn.SocketAwaitable\src\Dawn.SocketAwaitable\Dawn.SocketAwaitable.csproj">
+      <Project>{09c67697-1b3e-4e40-a972-c6768ffa006c}</Project>
+      <Name>Dawn.SocketAwaitable</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
